@@ -1,3 +1,4 @@
-<button>Start</button> <br />
+<button (click)="toggleCapture()">{{ startCapture ? "Start" : "Stop" }}</button>
+<br />
 
 <video #videoElement controls></video>

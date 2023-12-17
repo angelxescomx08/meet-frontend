@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class CaptureService {
-  private localStream!: MediaStream;
+  private localStream: MediaStream | null = null;
 
   async startCamera() {
     this.localStream = await navigator.mediaDevices.getUserMedia({
@@ -15,5 +15,9 @@ export class CaptureService {
 
   getLocalStream() {
     return this.localStream;
+  }
+
+  setLocalStreamToNull() {
+    this.localStream = null;
   }
 }
