@@ -9,6 +9,7 @@ import {
   inject,
 } from '@angular/core';
 import { CaptureService } from '../../../video-streaming/services/capture.service';
+import { StreamingService } from '../../../video-streaming/services/streaming.service';
 
 @Component({
   selector: 'app-home',
@@ -22,14 +23,16 @@ export class HomeComponent implements AfterViewInit {
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
   public startCapture: boolean = false;
   private captureService = inject(CaptureService);
+  private streamingService = inject(StreamingService);
 
   async ngAfterViewInit() {}
 
-  public async toggleCapture() {
+  async toggleCapture() {
     if (this.startCapture) {
       this.captureService.stopCamera(this.videoElement.nativeElement);
     } else {
       await this.captureService.startCamera(this.videoElement.nativeElement);
+      this.streamingService.stream(this.captureService.getLocalStream()!);
     }
     this.startCapture = !this.startCapture;
   }
