@@ -25,32 +25,11 @@ export class HomeComponent implements AfterViewInit {
 
   async ngAfterViewInit() {}
 
-  async startCamera() {
-    await this.captureService.startCamera();
-    this.videoElement.nativeElement.srcObject =
-      this.captureService.getLocalStream();
-    this.videoElement.nativeElement.onloadedmetadata = () => {
-      this.videoElement.nativeElement.play();
-    };
-  }
-
-  stopCamera() {
-    if (!this.captureService.getLocalStream()) {
-      return;
-    }
-    const tracks = this.captureService.getLocalStream()?.getTracks();
-    tracks?.forEach((track) => {
-      track.stop();
-    });
-    this.videoElement.nativeElement.srcObject = null;
-    this.captureService.getLocalStream();
-  }
-
   public async toggleCapture() {
     if (this.startCapture) {
-      this.stopCamera();
+      this.captureService.stopCamera(this.videoElement.nativeElement);
     } else {
-      await this.startCamera();
+      await this.captureService.startCamera(this.videoElement.nativeElement);
     }
     this.startCapture = !this.startCapture;
   }
