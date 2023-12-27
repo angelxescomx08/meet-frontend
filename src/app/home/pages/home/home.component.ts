@@ -28,12 +28,13 @@ export class HomeComponent implements AfterViewInit {
   async ngAfterViewInit() {}
 
   async toggleCapture() {
+    this.startCapture = !this.startCapture;
     if (this.startCapture) {
       this.captureService.stopCamera(this.videoElement.nativeElement);
+      this.streamingService.stopStream();
     } else {
       await this.captureService.startCamera(this.videoElement.nativeElement);
       this.streamingService.stream(this.captureService.getLocalStream()!);
     }
-    this.startCapture = !this.startCapture;
   }
 }
